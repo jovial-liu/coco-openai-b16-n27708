@@ -1,0 +1,61 @@
+BEYOND MEAN FOILS: AUDITING WORST-FOIL SPECIFICITY IN FROZEN CLIP REGION
+EXPLANATIONS
+Kaixin Liu, Zhipeng Ye, Feng Jiang, Qiufeng Wang, Jinye Li
+
+ABSTRACT
+A frozen CLIP region explanation can be spatially plausible while a non-target semantic foil responds more strongly than the target. We audit this failure with matched prompt-mean and aggregate worst-foil margins and evaluate the actual target-only CCI selector. On COCO/OpenAI B/16, the normalized aggregate margin is -.342 and 74.0% of selected regions have negative margin; hardest-foil identity has 59.8% mean pairwise agreement across held-out prompt families. We then test whether the failure is locally repairable inside the frozen CCI candidate set. A selection-stage target-tolerant reranking changes only 2.0-2.6% of regions at epsilon=.02 yet improves normalized aggregate worst-foil margin by .0150/.0108/.0118/.0087 on COCO B/16, COCO B/32, VOC B/16, and VOC B/32; 10,000-resample paired confidence intervals are above zero in all four, while held-out target-response intervals include zero. Gains persist when selection and evaluation use disjoint category foils and when evaluation is restricted to annotation-absent foils. Random and target-only feasible reranking do not explain the effect. Thus worst-foil debt is sparse but reproducible and locally repairable within frozen CCI candidates, without claiming a universally superior explanation rule.
+
+METHODS - CORE DEFINITIONS
+For checkpoint m, let s_m(x,c) be its fixed pre-activation scaled image-text similarity. For candidate region R and concept prompt c,
+
+d_R(c) = s_m(x,c) - s_m(I(x,R),c).                                      (1)
+
+Original target-only CCI selects
+
+R_CCI = arg max_{R in R(x)} d_R^sel(t).                                  (2)
+
+Matched held-out estimands normalize each class identically and define prompt-mean and aggregate worst-foil margins. P_max is ontology-relative, not human semantic ground truth or a stand-alone explanation quality score.
+
+Selection-stage target tolerance:
+
+M^sel(R,t) = d_R^sel(t) - max_{f in F_t} d_R^sel(f).                       (4)
+
+R_epsilon = {R : d_R^sel(t) >= d_R_CCI^sel(t) - epsilon}.                 (5)
+
+R_WF(epsilon) = arg max_{R in R_epsilon} M^sel(R,t).                      (6)
+
+Equation 6 reads only selection-stage tensors; held-out prompts are used only after the region is fixed. epsilon=.02 is a small fixed operating point, not an optimized value. The method is not called target-preserving because the constraint is guaranteed only at selection stage; held-out target response is evaluated statistically.
+
+PROTOCOL
+K=8 frozen CCI regions on COCO val2014 (27,708 eligible images) and VOC2007 test (1,943), with OpenAI CLIP B/16 and B/32. The main intervention blocks selected patch key/value columns in every visual-transformer block and head, retaining the prefix token. Bbox precision is the fraction of selected patch centers falling inside any resize/crop-transformed target box. Main intervals use 10,000 paired unique-image bootstrap resamples (seed 1701). Cross-foil controls use ten fixed seeds and complementary category folds, pooling both selection/evaluation directions.
+
+RESULTS RELEVANT TO FIGURE 1
+Actual CCI exhibits worst-foil debt. On COCO/OpenAI B/16, original CCI has normalized P_max^agg=-.342 [-.357,-.327], and 74.04% [73.56,74.61]% of selected regions have negative aggregate margin. Held-out raw target response is .939 [.924,.953] and bbox precision .679 [.674,.683].
+
+Sparse/local repairability is reproducible. Direct actual-CCI comparison at epsilon=.02:
+
+COCO B/16: P_CCI=-.342; Delta P=+.0150 [+.0131,+.0169]; Delta d_t=+.00005 [-.00034,+.00044]; Delta bbox=-.00118 [-.00199,-.00036]; switch=2.39%; fail 74.04->73.89%.
+COCO B/32: P_CCI=-.304; Delta P=+.0108 [+.00945,+.0122]; Delta d_t=-.00010 [-.00046,+.00027]; Delta bbox=-.00080 [-.00162,+.00002]; switch=2.21%; fail 73.91->73.75%.
+VOC B/16: P_CCI=+.168; Delta P=+.0118 [+.00677,+.0183]; Delta d_t=-.00085 [-.00227,+.00059]; Delta bbox=-.00340 [-.00652,-.00034]; switch=2.57%; fail 58.16->57.59%.
+VOC B/32: P_CCI=+.186; Delta P=+.00867 [+.00441,+.0143]; Delta d_t=-.00069 [-.00184,+.00040]; Delta bbox=+.00023 [-.00288,+.00341]; switch=1.96%; fail 55.89->55.58%.
+
+The gain is not merely selector-endpoint reuse. Category-disjoint cross-foil normalized aggregate gains:
+COCO B/16 +.01052 [+.00901,+.01198]
+COCO B/32 +.00728 [+.00629,+.00846]
+VOC B/16 +.00705 [+.00296,+.01140]
+VOC B/32 +.00438 [+.00131,+.00784]
+
+Annotation-absent evaluation point estimates on the full eligible population:
+COCO B/16 +.00939
+COCO B/32 +.00697
+VOC B/16 +.00809
+VOC B/32 +.00443
+The paper states all corresponding paired CIs are above zero, but the exact annotation-absent CI endpoints are not printed in the prose. Do not invent them.
+
+The old Figure 1 is an identification-control error-bar plot with four settings (COCO B/16, COCO B/32, VOC B/16, VOC B/32), three series (Full foils, Cross-foil, Absent-only), y-axis normalized aggregate Delta P_max, and paired 95% intervals. The redesign should retain this evidence in a much more compact forest-plot panel.
+
+QUALITATIVE ENDPOINT SEPARATION
+The paper's Figure 2 shows deterministic COCO/OpenAI B/16 examples at epsilon=.02. The examples make non-dominance explicit: one case improves both specificity and locality; another improves specificity while bbox precision falls; a counterexample worsens specificity even though locality rises. Thus reranking is not a per-image dominance rule.
+
+CONCLUSION
+Actual CCI can carry substantial ontology-relative worst-foil debt, and the effect survives matched estimands, disjoint/annotation-absent foils, matched foil counts, and 10,000-resample uncertainty checks. Arbitrary feasible reranking does not reproduce the gain. Worst-foil debt is a stable, locally repairable failure mode for a small subset of frozen CCI candidates, while target response and spatial locality remain separate endpoints.
