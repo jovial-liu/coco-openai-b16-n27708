@@ -1,0 +1,432 @@
+\documentclass[10pt]{article}
+\usepackage{icassp2027_paperkit}
+\usepackage{amsmath,amssymb,booktabs,graphicx,microtype}
+\usepackage{url}
+\urlstyle{same}
+\usepackage{placeins}
+\usepackage{cuted}
+\usepackage{balance}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\setlength{\textfloatsep}{6pt plus 2pt minus 2pt}
+\setlength{\floatsep}{5pt plus 2pt minus 2pt}
+\setlength{\intextsep}{5pt plus 2pt minus 2pt}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{0pt}
+
+\newcommand{\dropv}{d}
+\newcommand{\foils}{\mathcal{F}}
+\newcommand{\regions}{\mathcal{R}}
+
+\title{Beyond Mean Foils: Auditing Worst-Foil Specificity in Frozen CLIP Region Explanations}
+\input{authors.tex}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A frozen CLIP region explanation can be spatially plausible while a non-target
+semantic foil responds more strongly than the target. We audit this failure for
+the \emph{actual} target-only CCI selector using matched prompt-mean and aggregate
+worst-foil margins. On COCO/OpenAI B/16, the normalized aggregate margin is
+$-.342$, 74.0\% of selected regions are negative, and hardest-foil identity has
+59.8\% mean pairwise agreement across held-out prompt families. A selection-stage
+target-tolerant reranking at $\epsilon=.02$ switches only 2.0--2.6\% of images but
+improves normalized aggregate margin by $.0150/.0108/.0118/.0087$ across COCO/VOC
+and B/16/B/32. All 10,000-resample paired confidence intervals are above zero,
+whereas held-out target-response intervals include zero. Gains persist with
+category-disjoint and annotation-absent foils; random and target-only feasible
+reranking do not explain them. Thus worst-foil debt is reproducible, while
+repairability is sparse and local within frozen CCI candidate sets, without
+implying a universally superior rule.
+\end{abstract}
+\begin{keywords}
+CLIP, explainability, interventions, model auditing, worst-foil specificity
+\end{keywords}
+
+\section{Introduction}
+Frozen vision-language models such as CLIP~\cite{radford2021clip} are often interpreted by ranking image regions
+according to the change in image--text similarity after an intervention.
+CCI~\cite{agarwal2025cci}, for example, clusters CLIP patch tokens into regions
+and ranks the region that maximizes a target-score drop. A large target drop says
+that a region matters for the target; it does not establish that the effect is
+\emph{specific} to the target. Removing generic object evidence can reduce a
+competing semantic foil even more, while bounding-box overlap remains high.
+Likewise, averaging over many easy foils can hide one high-impact confounder.
+
+We audit the declared foil-response vector of the \emph{selected} frozen
+region and report target response, worst-foil specificity, and spatial locality
+separately. The contribution is the post-selection audit and controlled evidence
+of local repairability, not the max/CVaR operator itself~\cite{rockafellar2000cvar}.
+Relevant work includes corpus-level contrastive attribution (COCOA)~\cite{lin2023cocoa},
+confusion-set saliency auditing (CASE)~\cite{williamson2025case}, CLIP attribution
+methods~\cite{wang2023m2ib,li2023clipsurgery,dreyer2025cliplatent}, and recent
+class-disentangled/concept-contrastive analyses~\cite{li2026cdaclip,cheng2026mgaclip,visser2026contrastiveconcept}, and structured compositional caption foils such as ARO~\cite{yuksekgonul2023aro}.
+
+Our contributions are threefold: (i) matched prompt-mean and aggregate
+worst-foil estimands for the actual CCI baseline; (ii) prompt-stability,
+matched-count, category-disjoint, and annotation-absent controls; and (iii) a
+selection-stage target-tolerance test against actual CCI and same-feasible-set
+baselines. The effect is deliberately characterized as \emph{sparse/local
+repairability}: only about 2\% of selections change, but those changes reliably
+improve held-out worst-foil margins.
+
+\section{Worst-Foil Audit and Target-Tolerant Reranking}
+For checkpoint $m$, let $s_m(x,c)$ be its fixed pre-activation scaled
+image--text similarity. For candidate region $R$ and concept prompt $c$, define
+\begin{equation}
+\dropv_R(c)=s_m(x,c)-s_m(\mathcal I(x,R),c),
+\label{eq:drop}
+\end{equation}
+where $\mathcal I$ is a frozen internal intervention. Original target-only CCI
+selects
+\begin{equation}
+R_{\rm CCI}=\arg\max_{R\in\regions(x)}\dropv_R^{\rm sel}(t),
+\label{eq:cci}
+\end{equation}
+using only the selection prompt. For non-target foils $\foils_t$, a worst-foil
+margin compares the target response with the strongest foil response.
+
+\paragraph{Matched held-out estimands.}
+Selection uses ``a photo of a \{category\}''. Held-out evaluation uses
+``a picture of the \{category\}'', ``an image containing a \{category\}'', and
+``the \{category\}''. Let $e_h(c)$ denote the stored unit-norm text embedding
+for held-out prompt $h$, and
+$n_c=\|H^{-1}\sum_h e_h(c)\|_2$.
+We normalize every class identically as
+$\widetilde d_h(c)=d_h(c)/n_c$ and~define
+\begin{equation}
+\begin{aligned}
+P_{\max}^{\rm pm}(R,t)
+&=H^{-1}\!\sum_h[\widetilde d_h(t)-\max_f\widetilde d_h(f)],\\
+P_{\max}^{\rm agg}(R,t)
+&=H^{-1}\!\sum_h\widetilde d_h(t)-
+\max_f H^{-1}\!\sum_h\widetilde d_h(f).
+\end{aligned}
+\label{eq:estimands}
+\end{equation}
+Now the pair differs only in max/mean ordering. The same paired comparisons in
+raw drop space have the same direction in all four settings. $P_{\max}$ is
+ontology-relative, not human semantic ground truth or a stand-alone explanation
+quality score.
+
+\paragraph{Selection-stage target tolerance.}
+For each candidate define
+\begin{equation}
+M^{\rm sel}(R,t)=\dropv_R^{\rm sel}(t)-
+\max_{f\in\foils_t}\dropv_R^{\rm sel}(f).
+\end{equation}
+Given tolerance $\epsilon$, form
+\begin{equation}
+\regions_\epsilon=\{R:\dropv_R^{\rm sel}(t)\ge
+\dropv_{R_{\rm CCI}}^{\rm sel}(t)-\epsilon\},
+\end{equation}
+and rerank only this feasible set:
+\begin{equation}
+R_{\rm WF}(\epsilon)=\arg\max_{R\in\regions_\epsilon}M^{\rm sel}(R,t).
+\label{eq:repair}
+\end{equation}
+Because $R_{\rm CCI}\in\regions_\epsilon$, the feasible set is nonempty;
+any switch loses at most $\epsilon$ of the \emph{selection-stage} target drop.
+This is not a held-out target guarantee. Equation~\ref{eq:repair} reads only
+selection-stage tensors, and held-out prompts are used only after the region is
+fixed. We use $\epsilon=.02$ as a fixed operating point, not an optimized value.
+Figure~\ref{fig:method} summarizes the separation.
+
+\section{Experimental Protocol}
+\paragraph{Models, intervention, and endpoints.}
+We use $K=8$ frozen CCI regions on COCO val2014~\cite{lin2014coco}
+(27,708 eligible images) and VOC2007 test~\cite{everingham2010voc} (1,943), with
+OpenAI CLIP B/16 and B/32. Reranking changes only which frozen candidate is
+selected. The intervention blocks selected patch key/value columns in every
+visual-transformer block and head while retaining the prefix token. BBox precision
+is the fraction of selected patch centers inside transformed target boxes and is
+reported separately because perturbation metrics depend on the intervention
+operator~\cite{gomez2022metrics}. Ties use the first exact NumPy argmax.
+
+\paragraph{Held-out controls and uncertainty.}
+Selection uses one template and evaluation uses the three held-out templates in
+Eq.~\ref{eq:estimands}. Cross-foil controls use ten fixed seeds
+$1701,2701,\ldots,10701$ to form disjoint category folds and pool both directions;
+annotation-absent evaluation removes categories annotated as present without
+claiming semantic absence. Fixed 5/19-foil subsets isolate foil-cardinality effects.
+Main intervals use 10,000 paired unique-image bootstrap resamples (seed 1701).
+Only four provenance-valid OpenAI settings enter the direct reranking analysis;
+two historical LAION settings are excluded because their text-normalization
+provenance is unresolved.
+
+\section{Results}
+\paragraph{Actual CCI exhibits worst-foil debt.}
+On COCO/OpenAI B/16, original CCI has normalized
+$P_{\max}^{\rm agg}=-.342$ [--.357,--.327], and 74.04\% [73.56,74.61]\% of
+selected regions have negative aggregate margin. Its held-out raw target
+response is $.939$ [.924,.953] and bbox precision $.679$ [.674,.683], so the
+failure is not equivalent to weak target response or poor localization.
+
+\paragraph{Sparse/local repairability is reproducible.}
+Table~\ref{tab:main} gives the direct actual-CCI comparison. Normalized aggregate
+and prompt-mean deltas are positive with CIs above zero in all four settings;
+the corresponding prompt-mean deltas are +.0150, +.0108, +.0119, and +.00867.
+Held-out target-response intervals include zero in all four. Locality is not
+uniformly preserved: B/16 on COCO and VOC shows small bbox decreases, while B/32
+intervals include zero.
+
+\paragraph{The gain is not merely selector--endpoint reuse.}
+Figure~\ref{fig:ident} shows that the gain persists under category-disjoint
+cross-foil and annotation-absent evaluation. Pooled normalized aggregate gains
+are +.01052 [+.00901,+.01198], +.00728 [+.00629,+.00846], +.00705
+[+.00296,+.01140], and +.00438 [+.00131,+.00784] for COCO B/16, COCO B/32,
+VOC B/16, and VOC B/32. Restricting evaluation further to annotation-absent
+foils remains positive on the full eligible image population: +.00939, +.00697,
++.00809, and +.00443, with all paired CIs above zero. Thus the effect does not
+require reusing the same foil categories or scoring a co-occurring annotated
+object. Cross-foil, annotation-absent, and matched-count controls target ontology
+reuse, annotated co-occurrence, and foil-cardinality effects, respectively.
+
+\paragraph{Worst-foil-aware reranking, not arbitrary reranking, drives the gain.}
+Table~\ref{tab:baselines} shows that uniform feasible selection and target
+runner-up selection are near zero or negative, while mean-foil reranking is
+weaker. The fixed Max-.1 rule nearly matches the full worst-foil margin. This is
+consistent with our positioning: the contribution is the audit axis and its
+controlled repairability, not novelty of a max penalty.
+
+\paragraph{Foil count affects prevalence but not the conclusion.}
+Matched 5/19-foil controls remain positive, while the negative-margin rate rises
+as the foil universe expands. Thus the full-ontology failure rate partly reflects
+an extreme-value effect, but the reranking gain is not created solely by foil count.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.88\textwidth]{figures/figure1_method_compact.pdf}
+\caption{Selection-stage target-tolerant reranking and held-out audit. The selected region is fixed before held-out evaluation.}
+\label{fig:method}
+\end{figure*}
+
+\begin{table*}[t]
+\centering
+\caption{Actual CCI vs. WF at $\epsilon=.02$. $P=P_{\max}^{\rm agg}$; brackets are paired 95\% CIs; ``Neg.'' is CCI$\to$WF negative-margin rate.}
+\label{tab:main}
+\small
+\setlength{\tabcolsep}{1.8pt}
+\renewcommand{\arraystretch}{0.98}
+\begin{tabular}{lrrrrrr}
+\toprule
+Setting & $P_{\rm CCI}$ & $\Delta P$ & $\Delta d_t$ & $\Delta$bbox & Sw. & Neg.\\
+\midrule
+COCO B/16 & -.342 & +.0150 [+.0131,+.0169] & +.00005 [-.00034,+.00044] & -.00118 [-.00199,-.00036] & 2.39\% & 74.04$\to$73.89\%\\
+COCO B/32 & -.304 & +.0108 [+.00945,+.0122] & -.00010 [-.00046,+.00027] & -.00080 [-.00162,+.00002] & 2.21\% & 73.91$\to$73.75\%\\
+VOC B/16 & +.168 & +.0118 [+.00677,+.0183] & -.00085 [-.00227,+.00059] & -.00340 [-.00652,-.00034] & 2.57\% & 58.16$\to$57.59\%\\
+VOC B/32 & +.186 & +.00867 [+.00441,+.0143] & -.00069 [-.00184,+.00040] & +.00023 [-.00288,+.00341] & 1.96\% & 55.89$\to$55.58\%\\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=0.90\columnwidth]{figures/figure2_identification.pdf}
+\caption{Held-out normalized aggregate gains at $\epsilon=.02$; bars are paired
+95\% CIs.}
+\label{fig:ident}
+\end{figure}
+
+\begin{table}[!t]
+\centering
+\caption{Identification controls at $\epsilon=.02$; normalized aggregate $\Delta P_{\max}$ with paired 95\% CIs.}
+\label{tab:ident}
+\small
+\setlength{\tabcolsep}{2.0pt}
+\renewcommand{\arraystretch}{0.96}
+\begin{tabular}{lcc}
+\toprule
+Setting & Cross-foil & Absent-only\\
+\midrule
+COCO B/16 & \begin{tabular}{@{}c@{}}+.01052\\{[+.00901,+.01198]}\end{tabular} &
+\begin{tabular}{@{}c@{}}+.00939\\{[+.00819,+.01062]}\end{tabular}\\
+COCO B/32 & \begin{tabular}{@{}c@{}}+.00728\\{[+.00629,+.00846]}\end{tabular} &
+\begin{tabular}{@{}c@{}}+.00697\\{[+.00594,+.00804]}\end{tabular}\\
+VOC B/16 & \begin{tabular}{@{}c@{}}+.00705\\{[+.00296,+.01140]}\end{tabular} &
+\begin{tabular}{@{}c@{}}+.00809\\{[+.00438,+.01274]}\end{tabular}\\
+VOC B/32 & \begin{tabular}{@{}c@{}}+.00438\\{[+.00131,+.00784]}\end{tabular} &
+\begin{tabular}{@{}c@{}}+.00443\\{[+.00214,+.00727]}\end{tabular}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\FloatBarrier
+\begin{table}[!t]
+\centering
+\caption{Same-feasible-set baselines at $\epsilon=.02$; normalized aggregate $\Delta P_{\max}$. Max-.1: $d_t-.1\max_f d_f$.}
+\label{tab:baselines}
+\small
+\setlength{\tabcolsep}{1.8pt}
+\renewcommand{\arraystretch}{0.96}
+\begin{tabular}{lrrrrr}
+\toprule
+Setting & WF & Max-.1 & Mean & Unif. & 2nd $d_t$\\
+\midrule
+COCO B/16 & .0150 & .0147 & .0025 & .0006 & .0002\\
+COCO B/32 & .0108 & .0106 & .0015 & -.0025 & -.0023\\
+VOC B/16  & .0118 & .0113 & .0073 & .0010 & .0026\\
+VOC B/32  & .0087 & .0083 & .0055 & -.0044 & -.0046\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Reading the controls together.}
+Tables~\ref{tab:main}--\ref{tab:baselines} vary the selector, evaluation ontology,
+and reranking rule, respectively; their agreement argues against selector--endpoint
+reuse, foil-count artifacts, and arbitrary switching.
+
+\section{Additional Results and Conclusion}
+\paragraph{Foil-cardinality sensitivity.}
+The high full-ontology failure rate is partly an extreme-value effect: adding
+more candidate foils makes a strong non-target response more likely. Table~\ref{tab:foilcount}
+shows this directly. At the same time, the reranking gain stays positive at both
+matched counts, so the effect is not created solely by evaluating against a larger
+foil set.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=\columnwidth]{figures/qualitative_cases_wide.png}
+\caption{COCO/OpenAI B/16 cases at $\epsilon=.02$. Red/blue denote CCI/WF selected patches; bbox precision: (a) $.46\!\to\!1.00$, (b) $.81\!\to\!.11$, (c) $.02\!\to\!.88$.}
+\label{fig:cases}
+\end{figure}
+
+\paragraph{Debt persists under conventional screens.}
+On COCO B/16, 41.18\% of original selections simultaneously have bbox precision
+$\ge .5$, a positive aggregate mean-class margin, and a negative worst-foil margin.
+
+\begin{table}[!t]
+\centering
+\caption{COCO foil-count sensitivity. ``Neg.'' is original-CCI negative-margin rate; $\Delta P$ is normalized aggregate gain.}
+\label{tab:foilcount}
+\small
+\setlength{\tabcolsep}{2.1pt}
+\renewcommand{\arraystretch}{0.96}
+\begin{tabular}{lrrrrr}
+\toprule
+Setting & Neg.@5 & Neg.@19 & Neg.@all & $\Delta P_5$ & $\Delta P_{19}$\\
+\midrule
+COCO B/16 & 45.8\% & 63.5\% & 74.0\% & +.00872 & +.01074\\
+COCO B/32 & 45.0\% & 62.8\% & 73.9\% & +.00841 & +.00947\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Prompt-family stability.}
+Across the three held-out phrasings, hardest-foil identity agreement averages 59.80\%,
+exact three-way agreement is 46.36\%, and semantic-family agreement is 53.69\%
+(Table~\ref{tab:diagnostics}); wording often preserves confounder type even when
+the single hardest category changes.
+
+\paragraph{Sparse selection changes, large conditional corrections.}
+On COCO B/16, 74.04\% of original margins are negative, but only 663/27,708
+(2.39\%) selections switch at $\epsilon=.02$; 92.2\% of switches improve, with
+mean/median aggregate $\Delta P_{\max}=+.626/+.406$. Table~\ref{tab:diagnostics}
+reports the corresponding sign transitions.
+
+\begin{table}[!h]
+\centering
+\caption{COCO/B16 stability and sign transitions at $\epsilon=.02$; ``repair/intro.'' is negative$\to$non-negative / reverse.}
+\label{tab:diagnostics}
+\small
+\setlength{\tabcolsep}{3.0pt}
+\renewcommand{\arraystretch}{0.94}
+\begin{tabular}{lr}
+\toprule
+Diagnostic & Value\\
+\midrule
+Hardest-foil ID, prompt pair 1--2 & 59.25\%\\
+Hardest-foil ID, prompt pair 1--3 & 66.82\%\\
+Hardest-foil ID, prompt pair 2--3 & 53.32\%\\
+Mean pairwise ID agreement & 59.80\%\\
+All-three exact ID agreement & 46.36\%\\
+Semantic-family agreement & 53.69\%\\
+Aggregate repair / intro. & 42 / 0\\
+Prompt-event repair / intro. & 128 / 3\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Predeclared tolerance frontier.}
+Table~\ref{tab:frontier} uses the same frozen candidates and selection tensors;
+$\epsilon=.02$ was fixed rather than selected from it. As tolerance grows, switches
+increase while $\Delta P\mid\mathrm{sw}$ stays stable. Full-sample target/bbox deltas
+are $(+.00005,-.00118)$ at $.02$, $(-.00049,-.00223)$ at $.05$, and
+$(-.01396,-.01627)$ at $.20$, exposing the target--specificity trade-off.
+
+\begin{table}[!t]
+\centering
+\caption{Predeclared COCO/B16 frontier; $\Delta P$ is full-sample gain, while $\Delta P\mid\mathrm{sw}$ and $\Pr(+)$ condition on switches.}
+\label{tab:frontier}
+\small
+\setlength{\tabcolsep}{2.0pt}
+\renewcommand{\arraystretch}{0.95}
+\begin{tabular}{crrrr}
+\toprule
+$\epsilon$ & Sw. & $\Delta P$ & $\Delta P\mid\mathrm{sw}$ & $\Pr(+)$\\
+\midrule
+.01 & 1.23\% & +.00791 & +.642 & 90.9\%\\
+.02 & 2.39\% & +.01497 & +.626 & 92.2\%\\
+.05 & 6.24\% & +.03906 & +.626 & 91.6\%\\
+.10 & 11.68\% & +.07643 & +.654 & 92.0\%\\
+.20 & 21.87\% & +.14479 & +.662 & 92.9\%\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{What $\epsilon$ changes.}
+Across $.01$--$.20$, $\Delta P\mid\mathrm{sw}$ remains in a narrow $.626$--$.662$ band while the switch rate rises from 1.23\% to 21.87\%. Thus tolerance mainly expands the mass of locally repairable cases; the stronger target/locality cost appears only at larger operating points.
+
+\newpage
+\paragraph{Switch-conditioned repair accounting.}
+Because unchanged images contribute zero selector delta, COCO/OpenAI B/16 obeys
+$0.023928\times0.625624=0.014970$: the 2.39\% switch rate times the mean
+switched-image correction recovers the full-sample gain. Of 663 switches, 611
+improve. Table~\ref{tab:repair_accounting} shows a large conditional specificity
+correction with near-zero mean target-response change; bbox remains a separate endpoint.
+
+\begin{table}[!h]
+\centering
+\caption{Cross-setting repair concentration from Table~\ref{tab:main}. Conditional deltas are full-sample deltas divided by switch rate; values are approximate because Table~\ref{tab:main} is rounded.}
+\label{tab:repair_accounting}
+\small
+\setlength{\tabcolsep}{1.7pt}
+\renewcommand{\arraystretch}{0.94}
+\begin{tabular}{lrrrr}
+\toprule
+Setting & Sw. & $\Delta P\mid\mathrm{sw}$ & $\Delta d_t\mid\mathrm{sw}$ & $\Delta$bbox$\mid\mathrm{sw}$\\
+\midrule
+COCO B/16 & 2.39\% & $\approx+.628$ & $\approx+.0021$ & $\approx-.049$\\
+COCO B/32 & 2.21\% & $\approx+.489$ & $\approx-.0045$ & $\approx-.036$\\
+VOC B/16  & 2.57\% & $\approx+.459$ & $\approx-.0331$ & $\approx-.132$\\
+VOC B/32  & 1.96\% & $\approx+.442$ & $\approx-.0352$ & $\approx+.012$\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\paragraph{Repair is concentrated rather than ubiquitous.}
+Across settings, $\Delta P\mid\mathrm{sw}\approx .44$--$.63$; target-response changes are much smaller and locality shifts remain setting dependent. Aggregate repair/reverse is 42/0 and prompt-event 128/3; most gains therefore reduce debt without crossing zero.
+
+\paragraph{Target response and locality are separate endpoints.}
+All four held-out target-response CIs include zero; bbox effects are small and
+setting dependent (Table~\ref{tab:main}). Figure~\ref{fig:cases} shows per-image
+non-dominance. COCO B/32 remains seed-stable: [+.00945,+.01215] vs. [+.00943,+.01221].
+\paragraph{Conclusion.}
+Actual CCI can carry substantial ontology-relative worst-foil debt, and the
+effect survives matched estimands, disjoint/annotation-absent foils, matched foil
+counts, and 10,000-resample uncertainty checks. Arbitrary feasible reranking does
+not reproduce the gain. Worst-foil debt is therefore a reproducible failure mode
+with sparse local repairability within frozen CCI candidate sets, while target
+response and spatial locality remain separate endpoints.
+
+\paragraph{Acknowledgment.}
+Supported by the Young Scientific and Technological Talent Support Program,
+Taizhou Fengcheng Talent Plan. ChatGPT assisted language/formatting and
+Fig.~\ref{fig:method} layout; it generated no experimental data/results.
+
+\clearpage
+\balance
+\bibliographystyle{IEEEtran}
+\bibliography{references}
+\end{document}
