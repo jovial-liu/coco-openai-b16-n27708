@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="430" viewBox="0 0 1100 430">
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L8,4 L0,8 z" fill="#334155"/>
+    </marker>
+    <style>
+      .title{font-family:Arial,Helvetica,sans-serif;font-size:24px;font-weight:700;fill:#111827}
+      .sub{font-family:Arial,Helvetica,sans-serif;font-size:13px;fill:#475569}
+      .boxTitle{font-family:Arial,Helvetica,sans-serif;font-size:16px;font-weight:700;fill:#111827}
+      .body{font-family:Arial,Helvetica,sans-serif;font-size:13px;fill:#334155}
+      .tiny{font-family:Arial,Helvetica,sans-serif;font-size:11px;fill:#64748b}
+      .math{font-family:'Times New Roman',serif;font-size:14px;fill:#111827}
+    </style>
+  </defs>
+  <rect width="1100" height="430" fill="white"/>
+  <text x="18" y="32" class="title">Selection-stage reranking and held-out audit</text>
+  <text x="18" y="55" class="sub">Same frozen model and candidate regions; selection is separated from held-out evaluation.</text>
+
+  <text x="20" y="92" class="boxTitle">(a) Selection and held-out audit</text>
+  <text x="790" y="92" class="boxTitle">Held-out audit</text>
+
+  <rect x="20" y="110" width="165" height="180" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.1"/>
+  <text x="35" y="138" class="boxTitle">Shared frozen input</text>
+  <text x="35" y="163" class="body">Image x + target t</text>
+  <text x="35" y="190" class="body">K = 8 CCI regions</text>
+  <text x="35" y="220" class="boxTitle">Internal intervention</text>
+  <text x="35" y="244" class="body">Block selected patch K/V;</text>
+  <text x="35" y="262" class="body">retain prefix token</text>
+  <text x="35" y="282" class="tiny">Frozen model; no updates</text>
+
+  <rect x="220" y="120" width="165" height="150" rx="8" fill="#eef4fb" stroke="#b8c9df" stroke-width="1.1"/>
+  <text x="238" y="148" class="boxTitle">Original CCI</text>
+  <text x="238" y="174" class="body">maximize target response</text>
+  <text x="238" y="210" class="math">R_CCI = arg max d_R^sel(t)</text>
+  <text x="238" y="240" class="tiny">target-only selection</text>
+
+  <line x1="388" y1="195" x2="420" y2="195" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="425" y="120" width="210" height="150" rx="8" fill="#fbf5ec" stroke="#dfc59d" stroke-width="1.1"/>
+  <text x="443" y="148" class="boxTitle">Target-tolerant rerank</text>
+  <text x="443" y="176" class="body">epsilon = 0.02 feasible set</text>
+  <text x="443" y="204" class="math">d_R^sel(t) ≥ d_CCI^sel(t) - ε</text>
+  <text x="443" y="232" class="math">maximize d_R^sel(t) - max_f d_R^sel(f)</text>
+  <text x="443" y="254" class="tiny">selection-stage tensors only</text>
+
+  <line x1="638" y1="195" x2="670" y2="195" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="675" y="137" width="120" height="116" rx="8" fill="#ffffff" stroke="#64748b" stroke-width="1.2"/>
+  <text x="692" y="170" class="boxTitle">REGION</text>
+  <text x="704" y="194" class="boxTitle">FIXED</text>
+  <text x="690" y="221" class="tiny">before held-out</text>
+  <text x="700" y="237" class="tiny">evaluation</text>
+
+  <line x1="815" y1="108" x2="815" y2="286" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="5,5"/>
+  <text x="760" y="305" class="tiny">selection stage</text>
+  <text x="825" y="305" class="tiny">evaluation only</text>
+
+  <line x1="798" y1="195" x2="835" y2="195" stroke="#334155" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <rect x="840" y="118" width="235" height="156" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.1"/>
+  <text x="858" y="147" class="boxTitle">Held-out prompts</text>
+  <text x="858" y="175" class="body">Specificity</text>
+  <text x="858" y="202" class="body">Target response</text>
+  <text x="858" y="229" class="body">Locality / bbox precision</text>
+  <text x="858" y="254" class="tiny">report separately</text>
+
+  <rect x="20" y="330" width="1055" height="76" rx="8" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.0"/>
+  <text x="38" y="355" class="boxTitle">Controls</text>
+  <text x="150" y="355" class="body">Full foils / category-disjoint cross-foil / annotation-absent evaluation</text>
+  <text x="38" y="382" class="boxTitle">Key rule</text>
+  <text x="150" y="382" class="body">The region is fixed before any held-out evaluation; no feedback to selection.</text>
+</svg>
