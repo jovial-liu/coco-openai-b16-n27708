@@ -1,16 +1,20 @@
 ASTRA minimal handoff
 
-1) Start from current_latex/main.tex.
-   current_latex/ contains the current PDF, references.bib, authors.tex,
-   ICASSP style file, and all figure assets currently referenced by main.tex.
+Start here: current_latex/main.tex
 
-2) For figure redesign, compare svg_versions/:
-   - figure1_OLD_original_v5.svg: older original method schematic; preserve its useful visual language.
-   - figure1_MIDDLE_combined_editable.svg: intermediate combined figure that was closer to the desired scientific story.
-   - figure1_REBALANCED_source.svg: source used in the better rebalanced paper version.
-   - figure1_LATEST_rejected.svg: latest redraw; user does NOT like this design. Use only to see what changed, not as style target.
-   - figure2_REBALANCED_source.svg: earlier identification-control plot source.
-   - figure2_LATEST_rejected.svg: latest redraw; also not a style target.
+Direct editable files in this branch:
+- current_latex/main.tex
+- current_latex/authors.tex
+- current_latex/references.bib
+- current_latex/icassp2027_paperkit.sty
+- current_latex/figures/figure1_method_final.svg
+- current_latex/figures/figure2_identification_final.svg
 
-3) Do not change experimental numbers or formulas unless explicitly requested.
-   Main goal: improve page layout and redraw figures professionally while keeping the paper at 5 pages.
+For figure redesign compare svg_versions/:
+- figure1_OLD_reference.svg: older method-schematic reference. Preserve the useful visual language and selection/audit separation.
+- figure1_LATEST_rejected.svg: latest Figure 1 redraw. The user does NOT like this design; use only to see what changed, not as a style target.
+- figure2_LATEST_rejected.svg: latest identification-control redraw; also not a style target.
+
+The current LaTeX still names PDF/PNG figure assets in \includegraphics. Astra may regenerate those assets from the SVGs or replace the figure includes while redesigning. This handoff intentionally contains editable source files rather than a ZIP archive.
+
+Do not change experimental numbers or formulas unless explicitly requested. Keep four authors and keep the manuscript at 5 pages. Main goal: improve page layout and redraw figures professionally.
