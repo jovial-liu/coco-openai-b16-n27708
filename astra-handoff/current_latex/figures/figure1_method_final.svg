@@ -1,0 +1,130 @@
+<!DOCTYPE svg  PUBLIC '-//W3C//DTD SVG 1.1//EN'  'http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd'>
+<svg width="504pt" height="140.4pt" version="1.1" viewBox="0 0 504 140.4" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+</defs>
+<g id="b">
+<g id="c">
+<path d="m0 140.4h504v-140.4h-504z" fill="#fff"/>
+</g>
+<g id="d">
+<g id="e">
+<path d="m13.104 115.97h79.632q6.048 0 6.048-1.6848v-71.323q0-1.6848-6.048-1.6848h-79.632q-6.048 0-6.048 1.6848v71.323q0 1.6848 6.048 1.6848z" clip-path="url(#a)" fill="#f7f9fb" stroke="#aebdca"/>
+</g>
+<g id="f">
+<path d="m118.94 93.506h89.712q6.048 0 6.048-1.6848v-43.243q0-1.6848-6.048-1.6848h-89.712q-6.048 0-6.048 1.6848v43.243q0 1.6848 6.048 1.6848z" clip-path="url(#a)" fill="#f5f8fc" stroke="#a9bfd7"/>
+</g>
+<g id="g">
+<path d="m234.86 106.14h130.03q6.048 0 6.048-1.6848v-61.495q0-1.6848-6.048-1.6848h-130.03q-6.048 0-6.048 1.6848v61.495q0 1.6848 6.048 1.6848z" clip-path="url(#a)" fill="#fff9f4" stroke="#d9b999"/>
+</g>
+<g id="h">
+<path d="m406.22 115.97h84.672q6.048 0 6.048-1.6848v-71.323q0-1.6848-6.048-1.6848h-84.672q-6.048 0-6.048 1.6848v71.323q0 1.6848 6.048 1.6848z" clip-path="url(#a)" fill="#f3faf9" stroke="#8cc0bc"/>
+</g>
+<g id="i" stroke="#5d6a78" stroke-linecap="round">
+<path d="m98.766 78.624q7.0738 0 13.03 0" clip-path="url(#a)" fill="none"/>
+<path d="m107.8 76.624 4 2-4 2z" clip-path="url(#a)" fill="#5d6a78"/>
+</g>
+<g id="j" stroke="#5d6a78" stroke-linecap="round">
+<path d="m214.69 78.624q7.0738 0 13.03 0" clip-path="url(#a)" fill="none"/>
+<path d="m223.72 76.624 4 2-4 2z" clip-path="url(#a)" fill="#5d6a78"/>
+</g>
+<g id="k" stroke="#267e79" stroke-linecap="round">
+<path d="m370.93 78.624q14.629 0 28.141 0" clip-path="url(#a)" fill="none"/>
+<path d="m395.07 76.624 4 2-4 2z" clip-path="url(#a)" fill="#267e79"/>
+</g>
+<g id="l">
+<path d="m385.56 116.53v-74.412" clip-path="url(#a)" fill="none" stroke="#8da4b8" stroke-dasharray="3,3"/>
+</g>
+<g id="m">
+<text transform="rotate(-0 10.08 14.618)" x="10.08" y="14.618438" fill="#233142" font-family="'DejaVu Sans'" font-size="10px" font-weight="700">SELECTION STAGE</text>
+</g>
+<g id="n">
+<!-- Selection-stage tensors only; $\epsilon=.02$ -->
+<g transform="translate(10.08 25.794)" fill="#5d6a78">
+<text fill="#5d6a78" font-family="'DejaVu Sans'" font-size="9px"><tspan x="0" y="-0.15625">S</tspan> <tspan x="5.712891" y="-0.15625">e</tspan> <tspan x="11.25" y="-0.15625">l</tspan> <tspan x="13.750488" y="-0.15625">e</tspan> <tspan x="19.287598" y="-0.15625">c</tspan> <tspan x="24.23584" y="-0.15625">t</tspan> <tspan x="27.764648" y="-0.15625">i</tspan> <tspan x="30.265137" y="-0.15625">o</tspan> <tspan x="35.771484" y="-0.15625">n</tspan> <tspan x="41.475586" y="-0.15625">-</tspan> <tspan x="44.723145" y="-0.15625">s</tspan> <tspan x="49.412109" y="-0.15625">t</tspan> <tspan x="52.940918" y="-0.15625">a</tspan> <tspan x="58.456055" y="-0.15625">g</tspan> <tspan x="64.168945" y="-0.15625">e</tspan> <tspan x="69.706055" y="-0.15625"></tspan> <tspan x="72.566895" y="-0.15625">t</tspan> <tspan x="76.095703" y="-0.15625">e</tspan> <tspan x="81.632812" y="-0.15625">n</tspan> <tspan x="87.336914" y="-0.15625">s</tspan> <tspan x="92.025879" y="-0.15625">o</tspan> <tspan x="97.532227" y="-0.15625">r</tspan> <tspan x="101.232422" y="-0.15625">s</tspan> <tspan x="105.921387" y="-0.15625"></tspan> <tspan x="108.782227" y="-0.15625">o</tspan> <tspan x="114.288574" y="-0.15625">n</tspan> <tspan x="119.992676" y="-0.15625">l</tspan> <tspan x="122.493164" y="-0.15625">y</tspan> <tspan x="127.819336" y="-0.15625">;</tspan> <tspan x="130.851562" y="-0.15625"></tspan> <tspan x="140.330566" y="-0.15625">=</tspan> <tspan x="149.625" y="-0.15625">.</tspan> <tspan x="154.239258" y="-0.15625">0</tspan> <tspan x="159.965332" y="-0.15625">2</tspan> <tspan x="133.712402" y="-0.15625" font-style="oblique">ε</tspan></text>
+</g>
+</g>
+<g id="o">
+<text transform="rotate(-0 403.2 14.618)" x="403.2" y="14.618438" fill="#233142" font-family="'DejaVu Sans'" font-size="10px" font-weight="700">HELD-OUT AUDIT</text>
+</g>
+<g id="p">
+<text transform="rotate(-0 403.2 25.793)" x="403.2" y="25.792594" fill="#5d6a78" font-family="'DejaVu Sans'" font-size="9px">No held-out feedback</text>
+</g>
+<g id="q" fill="#233142" font-family="'DejaVu Sans'" font-size="9.5px" font-weight="700">
+<text transform="translate(24.611 49.972)">Frozen CCI</text>
+<text transform="translate(23.564 59.167)">candidates</text>
+</g>
+<g id="r">
+<!-- $K=8$ regions -->
+<g transform="translate(23.445 71.604)" fill="#233142">
+<text fill="#233142" font-family="'DejaVu Sans'" font-size="9px"><tspan x="0" y="-0.15625" font-style="oblique">K</tspan> <tspan x="7.655273" y="-0.15625">=</tspan> <tspan x="16.949707" y="-0.15625">8</tspan> <tspan x="22.675781" y="-0.15625"></tspan> <tspan x="25.536621" y="-0.15625">r</tspan> <tspan x="29.236816" y="-0.15625">e</tspan> <tspan x="34.773926" y="-0.15625">g</tspan> <tspan x="40.486816" y="-0.15625">i</tspan> <tspan x="42.987305" y="-0.15625">o</tspan> <tspan x="48.493652" y="-0.15625">n</tspan> <tspan x="54.197754" y="-0.15625">s</tspan></text>
+</g>
+</g>
+<g id="s">
+<text transform="rotate(-0 52.92 85.644)" x="52.92" y="85.644" fill="#233142" font-family="'DejaVu Sans'" font-size="9px" text-anchor="middle">K/V masking</text>
+</g>
+<g id="t">
+<text transform="rotate(-0 52.92 98.28)" x="52.92" y="98.28" fill="#5d6a78" font-family="'DejaVu Sans'" font-size="9px" text-anchor="middle">prefix retained</text>
+</g>
+<g id="u">
+<text transform="rotate(-0 52.92 109.51)" x="52.92" y="109.512" fill="#5d6a78" font-family="'DejaVu Sans'" font-size="9px" text-anchor="middle">no model updates</text>
+</g>
+<g id="v">
+<text transform="rotate(-0 163.8 54.756)" x="163.8" y="54.756" fill="#3569a5" font-family="'DejaVu Sans'" font-size="9.7px" font-weight="700" text-anchor="middle">Original CCI</text>
+</g>
+<g id="w">
+<text transform="rotate(-0 163.8 69.498)" x="163.8" y="69.498" fill="#233142" font-family="'DejaVu Sans'" font-size="9px" text-anchor="middle">maximize target drop</text>
+</g>
+<g id="x">
+<!-- $R_{\rm CCI}=\arg\max_R d_R^{\rm sel}(t)$ -->
+<g transform="translate(117.9 83.538)" fill="#233142">
+<text fill="#233142" font-family="'DejaVu Sans'"><tspan x="0" y="-0.764063" font-size="9px" font-style="oblique">R</tspan> <tspan x="64.201055" y="-0.764063" font-size="9px" font-style="oblique">d</tspan> <tspan x="84.71209" y="-0.764063" font-size="9px" font-style="oblique">t</tspan> <tspan x="6.253418" y="0.7125" font-size="6.3px">C</tspan> <tspan x="10.652344" y="0.7125" font-size="6.3px">C</tspan> <tspan x="15.05127" y="0.7125" font-size="6.3px">I</tspan> <tspan x="70.584961" y="-4.209375" font-size="6.3px">s</tspan> <tspan x="73.867236" y="-4.209375" font-size="6.3px">e</tspan> <tspan x="77.743213" y="-4.209375" font-size="6.3px">l</tspan> <tspan x="18.908789" y="-0.764063" font-size="9px">=</tspan> <tspan x="28.203223" y="-0.764063" font-size="9px">a</tspan> <tspan x="33.718359" y="-0.764063" font-size="9px">r</tspan> <tspan x="37.418555" y="-0.764063" font-size="9px">g</tspan> <tspan x="44.592656" y="-0.764063" font-size="9px">m</tspan> <tspan x="53.359746" y="-0.764063" font-size="9px">a</tspan> <tspan x="58.874883" y="-0.764063" font-size="9px">x</tspan> <tspan x="81.200859" y="-0.764063" font-size="9px">(</tspan> <tspan x="88.240898" y="-0.764063" font-size="9px">)</tspan> <tspan x="52.592656" y="5.642187" font-size="6.3px" font-style="oblique">R</tspan> <tspan x="69.913945" y="1.696875" font-size="6.3px" font-style="oblique">R</tspan></text>
+</g>
+</g>
+<g id="y" fill="#b76a31" font-family="'DejaVu Sans'" font-size="9.5px" font-weight="700">
+<text transform="translate(259.26 45.488)">Target-tolerant</text>
+<text transform="translate(272.09 54.756)">WF rerank</text>
+</g>
+<g id="z">
+<!-- $d_R^{\rm sel}(t)\geq d_{\rm CCI}^{\rm sel}(t)-\epsilon$ -->
+<g transform="translate(259.74 73.008)" fill="#233142">
+<text fill="#233142" font-family="'DejaVu Sans'"><tspan x="0" y="-0.764063" font-size="9px" font-style="oblique">d</tspan> <tspan x="19.049824" y="-0.764063" font-size="9px" font-style="oblique">t</tspan> <tspan x="37.137715" y="-0.764063" font-size="9px" font-style="oblique">d</tspan> <tspan x="57.263789" y="-0.764063" font-size="9px" font-style="oblique">t</tspan> <tspan x="75.35168" y="-0.764063" font-size="9px" font-style="oblique">ε</tspan> <tspan x="6.383906" y="-4.209375" font-size="6.3px">s</tspan> <tspan x="9.666182" y="-4.209375" font-size="6.3px">e</tspan> <tspan x="13.542158" y="-4.209375" font-size="6.3px">l</tspan> <tspan x="42.850605" y="1.696875" font-size="6.3px">C</tspan> <tspan x="43.521621" y="-4.209375" font-size="6.3px">s</tspan> <tspan x="46.803896" y="-4.209375" font-size="6.3px">e</tspan> <tspan x="47.249531" y="1.696875" font-size="6.3px">C</tspan> <tspan x="50.679873" y="-4.209375" font-size="6.3px">l</tspan> <tspan x="51.648457" y="1.696875" font-size="6.3px">I</tspan> <tspan x="5.712891" y="1.696875" font-size="6.3px" font-style="oblique">R</tspan> <tspan x="15.538594" y="-0.764063" font-size="9px">(</tspan> <tspan x="22.578633" y="-0.764063" font-size="9px">)</tspan> <tspan x="27.843281" y="-0.764063" font-size="9px">≥</tspan> <tspan x="53.752559" y="-0.764063" font-size="9px">(</tspan> <tspan x="60.792598" y="-0.764063" font-size="9px">)</tspan> <tspan x="66.057246" y="-0.764063" font-size="9px">−</tspan></text>
+</g>
+</g>
+<g id="aa">
+<!-- $\max\,[d_R^{\rm sel}(t)-\max_f d_R^{\rm sel}(f)]$ -->
+<g transform="translate(243.86 87.75)" fill="#233142">
+<text fill="#233142" font-family="'DejaVu Sans'"><tspan x="0" y="-0.764063" font-size="9px">m</tspan> <tspan x="8.76709" y="-0.764063" font-size="9px">a</tspan> <tspan x="14.282227" y="-0.764063" font-size="9px">x</tspan> <tspan x="21.069609" y="-0.764063" font-size="9px">[</tspan> <tspan x="40.119434" y="-0.764063" font-size="9px">(</tspan> <tspan x="47.159473" y="-0.764063" font-size="9px">)</tspan> <tspan x="52.424121" y="-0.764063" font-size="9px">−</tspan> <tspan x="61.718555" y="-0.764063" font-size="9px">m</tspan> <tspan x="70.485644" y="-0.764063" font-size="9px">a</tspan> <tspan x="76.000781" y="-0.764063" font-size="9px">x</tspan> <tspan x="98.326758" y="-0.764063" font-family="'DejaVu Sans'" font-size="9px">(</tspan> <tspan x="105.006445" y="-0.764063" font-family="'DejaVu Sans'" font-size="9px">)</tspan> <tspan x="108.517676" y="-0.764063" font-family="'DejaVu Sans'" font-size="9px">]</tspan> <tspan x="24.58084" y="-0.764063" font-size="9px" font-style="oblique">d</tspan> <tspan x="43.630664" y="-0.764063" font-size="9px" font-style="oblique">t</tspan> <tspan x="81.326953" y="-0.764063" font-size="9px" font-style="oblique">d</tspan> <tspan x="101.837988" y="-0.764063" font-size="9px" font-style="oblique">f</tspan> <tspan x="30.964746" y="-4.209375" font-size="6.3px">s</tspan> <tspan x="34.247021" y="-4.209375" font-size="6.3px">e</tspan> <tspan x="38.122998" y="-4.209375" font-size="6.3px">l</tspan> <tspan x="87.710859" y="-4.209375" font-size="6.3px">s</tspan> <tspan x="90.993135" y="-4.209375" font-size="6.3px">e</tspan> <tspan x="94.869111" y="-4.209375" font-size="6.3px">l</tspan> <tspan x="30.29373" y="1.696875" font-size="6.3px" font-style="oblique">R</tspan> <tspan x="70.718555" y="5.839062" font-size="6.3px" font-style="oblique">f</tspan> <tspan x="87.039844" y="1.696875" font-size="6.3px" font-style="oblique">R</tspan></text>
+</g>
+</g>
+<g id="ab">
+<text transform="rotate(-0 299.88 100.39)" x="299.88" y="100.386" fill="#5d6a78" font-family="'DejaVu Sans'" font-size="9px" text-anchor="middle">over feasible candidates</text>
+</g>
+<g id="ac">
+<g id="ad">
+<path d="m348.48 41.849h74.164v-10.69h-74.164z" fill="#fff"/>
+</g>
+<text transform="rotate(-0 385.56 38.987)" x="385.56" y="38.987437" fill="#233142" font-family="'DejaVu Sans'" font-size="9px" font-weight="700" text-anchor="middle">REGION FIXED</text>
+</g>
+<g id="ae" fill="#267e79" font-family="'DejaVu Sans'" font-size="9.5px" font-weight="700">
+<text transform="translate(421.08 45.562)">3 held-out</text>
+<text transform="translate(421.57 54.756)">templates</text>
+</g>
+<g id="af" fill="#233142" font-family="'DejaVu Sans'" font-size="9px">
+<text transform="translate(424.18 65.702)">Specificity:</text>
+<text transform="translate(410.41 74.412)">worst-foil margin</text>
+</g>
+<g id="ag">
+<text transform="rotate(-0 448.56 94.068)" x="448.56" y="94.068" fill="#233142" font-family="'DejaVu Sans'" font-size="9px" text-anchor="middle">Target response</text>
+</g>
+<g id="ah">
+<text transform="rotate(-0 448.56 107.41)" x="448.56" y="107.406" fill="#233142" font-family="'DejaVu Sans'" font-size="9px" text-anchor="middle">Locality / bbox</text>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="a">
+<rect width="504" height="140.4"/>
+</clipPath>
+</defs>
+</svg>
