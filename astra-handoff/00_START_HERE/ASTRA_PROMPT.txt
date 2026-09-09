@@ -1,0 +1,11 @@
+Read `ASTRA_MASTER_HANDOFF.md` first.
+
+Work from `../current_latex/main.tex` for the newest text/data, but use the rebalanced/older SVG references as the visual/layout references. The user dislikes the latest Figure 1/2 redraws; redesign them rather than polishing the rejected style.
+
+Primary tasks:
+1. Professionally redesign Figure 1 and Figure 2 as editable vector graphics, preserving the exact science and numeric data.
+2. Keep Figure 3 as the supplied qualitative image/cases, preferably single-column so the other column can carry experiments.
+3. Reflow the LaTeX to produce a visually balanced, dense 5-page ICASSP paper: pages 1–4 technical content, page 5 references only.
+4. Audit and remove unnecessary forced page breaks / float barriers if they create blank regions. Do not solve layout by shrinking text below readable conference size.
+5. Do not change experimental numbers, formulas, authors, or claim scope without explicit source verification.
+6. Return: final PDF, complete LaTeX source, editable Figure 1/2 SVGs, vector PDFs, and a short change log.
