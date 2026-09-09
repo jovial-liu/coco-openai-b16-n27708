@@ -1,0 +1,122 @@
+--- /mnt/data/liu_icassp2027_layout_rebalanced_source/main.tex	2026-09-09 06:13:35.301054116 +0000
++++ /mnt/data/liu_icassp2027_final_typography_final_source/main.tex	2026-09-09 07:19:47.533462438 +0000
+@@ -215,10 +215,10 @@
+ 
+ \begin{figure*}[t]
+ \centering
+-\includegraphics[width=0.88\textwidth]{figures/figure1_method_compact.pdf}
+-\caption{Selection and held-out audit. CCI maximizes target drop; WF reranks only
+-the $\epsilon=.02$ feasible set by the selection-stage worst-foil margin, then
+-fixes the region before held-out evaluation.}
++\includegraphics[width=\textwidth]{figures/figure1_method_final.pdf}
++\caption{Selection and held-out audit. Frozen CCI candidates are selected or reranked
++only from selection-stage tensors; the region is fixed before held-out specificity,
++target-response, and locality evaluation.}
+ \label{fig:method}
+ \end{figure*}
+ 
+@@ -243,9 +243,9 @@
+ 
+ \begin{figure}[!t]
+ \centering
+-\includegraphics[width=0.90\columnwidth]{figures/figure2_identification.pdf}
+-\caption{Held-out normalized aggregate gains at $\epsilon=.02$; bars are paired
+-95\% CIs.}
++\includegraphics[width=\columnwidth]{figures/figure2_identification_final.pdf}
++\caption{Held-out normalized aggregate gains at $\epsilon=.02$ for full,
++category-disjoint cross-foil, and annotation-absent evaluation; bars are paired 95\% CIs.}
+ \label{fig:ident}
+ \end{figure}
+ 
+@@ -307,8 +307,11 @@
+ 
+ \begin{figure}[!t]
+ \centering
+-\includegraphics[width=\columnwidth]{figures/qualitative_cases_wide.png}
+-\caption{COCO/OpenAI B/16 cases at $\epsilon=.02$. Red/blue denote CCI/WF selected patches; bbox precision: (a) $.46\!\to\!1.00$, (b) $.81\!\to\!.11$, (c) $.02\!\to\!.88$.}
++\includegraphics[width=\columnwidth]{figures/qualitative_cases_compact_labels.png}
++\caption{COCO/OpenAI B/16 cases at $\epsilon=.02$ (top/bottom: CCI/WF):
++(a) locality gain, dining table, $\Delta P=+4.58$; (b) specificity--locality trade-off,
++person, $\Delta P=+0.78$; (c) counterexample, person, $\Delta P=-0.98$. Bbox precision:
++$.46\!\to\!1.00$, $.81\!\to\!.11$, and $.02\!\to\!.88$, respectively.}
+ \label{fig:cases}
+ \end{figure}
+ 
+@@ -334,10 +337,9 @@
+ \end{table}
+ 
+ \paragraph{Prompt-family stability.}
+-Across the three held-out phrasings, hardest-foil identity agreement averages 59.80\%,
+-exact three-way agreement is 46.36\%, and semantic-family agreement is 53.69\%
+-(Table~\ref{tab:diagnostics}); wording often preserves confounder type even when
+-the single hardest category changes.
++Across the three held-out phrasings, mean pairwise hardest-foil identity agreement is
++59.80\%, all-three exact agreement is 46.36\%, and semantic-family agreement is
++53.69\% (Table~\ref{tab:diagnostics}).
+ 
+ \paragraph{Sparse selection changes, large conditional corrections.}
+ On COCO B/16, 74.04\% of original margins are negative, but only 663/27,708
+@@ -401,32 +403,37 @@
+ \newpage
+ \paragraph{Switch-conditioned repair accounting.}
+ Because unchanged images contribute zero selector delta, COCO/OpenAI B/16 obeys
+-$0.023928\times0.625624=0.014970$: the 2.39\% switch rate times the mean
+-switched-image correction recovers the full-sample gain. Of 663 switches, 611
+-improve. Table~\ref{tab:repair_accounting} shows a large conditional specificity
+-correction with near-zero mean target-response change; bbox remains a separate endpoint.
++$0.023928\times0.625624=0.014970$: the exact 2.39\% switch rate times the mean
++switched-image correction recovers the full-sample aggregate gain. Of 663 switches,
++611 improve. Table~\ref{tab:repair_accounting} reports exact archived conditional
++statistics; target response changes little on average, whereas locality remains a
++separate endpoint.
+ 
+ \begin{table}[!h]
+ \centering
+-\caption{Cross-setting repair concentration from Table~\ref{tab:main}. Conditional deltas are full-sample deltas divided by switch rate; values are approximate because Table~\ref{tab:main} is rounded.}
++\caption{COCO/B16 switch-conditioned repair at $\epsilon=.02$; exact archived statistics.}
+ \label{tab:repair_accounting}
+ \small
+-\setlength{\tabcolsep}{1.7pt}
++\setlength{\tabcolsep}{3.0pt}
+ \renewcommand{\arraystretch}{0.94}
+-\begin{tabular}{lrrrr}
++\begin{tabular}{lr}
+ \toprule
+-Setting & Sw. & $\Delta P\mid\mathrm{sw}$ & $\Delta d_t\mid\mathrm{sw}$ & $\Delta$bbox$\mid\mathrm{sw}$\\
++Quantity & Value\\
+ \midrule
+-COCO B/16 & 2.39\% & $\approx+.628$ & $\approx+.0021$ & $\approx-.049$\\
+-COCO B/32 & 2.21\% & $\approx+.489$ & $\approx-.0045$ & $\approx-.036$\\
+-VOC B/16  & 2.57\% & $\approx+.459$ & $\approx-.0331$ & $\approx-.132$\\
+-VOC B/32  & 1.96\% & $\approx+.442$ & $\approx-.0352$ & $\approx+.012$\\
++Switched images & 663 / 27,708 (2.39\%)\\
++Improving switches & 611 / 663 (92.2\%)\\
++Mean / median $\Delta P_{\max}^{\rm agg}$ & +.6256 / +.406\\
++Mean $\Delta d_t$ & +.00218\\
++Mean $\Delta$bbox precision & -.0495\\
+ \bottomrule
+ \end{tabular}
+ \end{table}
+ 
+ \paragraph{Repair is concentrated rather than ubiquitous.}
+-Across settings, $\Delta P\mid\mathrm{sw}\approx .44$--$.63$; target-response changes are much smaller and locality shifts remain setting dependent. Aggregate repair/reverse is 42/0 and prompt-event 128/3; most gains therefore reduce debt without crossing zero.
++Table~\ref{tab:main} shows that switch rates remain only 1.96--2.57\% across all
++four settings while full-sample specificity gains stay positive. The exact COCO
++B/16 accounting above shows how a small switched subset can therefore produce a
++measurable aggregate gain without implying per-image dominance.
+ 
+ \paragraph{Target response and locality are separate endpoints.}
+ All four held-out target-response CIs include zero; bbox effects are small and
+@@ -442,8 +449,10 @@
+ 
+ \paragraph{Acknowledgment.}
+ Supported by the Young Scientific and Technological Talent Support Program,
+-Taizhou Fengcheng Talent Plan. ChatGPT assisted language/formatting and
+-Fig.~\ref{fig:method} layout; it generated no experimental data/results.
++Taizhou Fengcheng Talent Plan. OpenAI ChatGPT assisted language revision,
++manuscript organization, LaTeX/formatting checks, and schematic/layout drafting
++for Fig.~\ref{fig:method}; it did not generate experimental data or numerical
++results. The authors verified the final content.
+ 
+ \clearpage
+ \balance
